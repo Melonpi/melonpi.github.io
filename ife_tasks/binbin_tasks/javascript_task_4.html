@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Javascript task 4</title>
+    <style>
+        .number-block {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            display: inline-block;
+            text-align: center;
+            line-height: 80px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="input">
+        <input type="text" id="number-input" />
+        <input type="button" id="left-push" value="左侧入" />
+        <input type="button" id="right-push" value="右侧入" />
+        <span>&nbsp&nbsp</span>
+        <input type="button" id="left-pop" value="左侧出" />
+        <input type="button" id="right-pop" value="右侧出" />
+    </div>
+    <div id="block-list">
+    </div>
+    <script>
+        function createNumberBlock(number) {
+            var node = document.createElement("div");
+            node.className = "number-block";
+            node.innerText = number;
+            return node;
+        }
+
+        function addChildToHead(node, child) {
+            var firstChild = node.firstChild;
+            if (firstChild) {
+                node.insertBefore(child, firstChild);
+            } else {
+                node.appendChild(child);
+            }
+        }
+
+        function addChildToTail(node, child) {
+            node.appendChild(child);
+        }
+
+        function removeFirstChild(node) {
+            if (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
+        }
+
+        function removeLastChild(node) {
+            if (node.lastChild) {
+                node.removeChild(node.lastChild);
+            }
+        }
+
+        var block_list = document.getElementById("block-list");
+        var left_push_button = document.getElementById("left-push");
+        var right_push_button = document.getElementById("right-push");
+        var left_pop_button = document.getElementById("left-pop");
+        var right_pop_button = document.getElementById("right-pop");
+        var number_input = document.getElementById("number-input");
+
+        function checkIfInputIsInteger(input_text) {
+            //note:不严格的非负整数匹配
+            var pattern = /^\d+$/;
+            return input_text.match(pattern) != null;
+        }
+
+        function getInputTextAndResetInput() {
+            var input_text = number_input.value;
+            number_input.value = "";
+            return input_text;
+        }
+
+        function alertInvalidIntegerInput() {
+            alert("Input must be a integer!");
+        }
+
+        left_push_button.onclick = function() {
+            var input_text = getInputTextAndResetInput();
+            if (checkIfInputIsInteger(input_text)) {
+                var value = parseInt(input_text);
+                var block = createNumberBlock(value);
+                addChildToHead(block_list, block);
+            } else {
+                alertInvalidIntegerInput();
+            }
+        };
+
+        right_push_button.onclick = function() {
+            var input_text = getInputTextAndResetInput();
+            if (checkIfInputIsInteger(input_text)) {
+                var value = parseInt(input_text);
+                var block = createNumberBlock(value);
+                addChildToTail(block_list, block);
+            } else {
+                alertInvalidIntegerInput();
+            }
+        }
+
+        left_pop_button.onclick = function() {
+            removeFirstChild(block_list);
+        }
+
+        right_pop_button.onclick = function() {
+            removeLastChild(block_list);
+        }
+    </script>
+</body>
+
+</html>
